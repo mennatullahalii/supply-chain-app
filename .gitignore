@@ -1,0 +1,27 @@
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Global Logs
+*.log
+logs/
+
+# Node / React
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Kotlin / Gradle
+.gradle/
+build/
+out/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
