@@ -5,10 +5,11 @@ function App() {
   const [sku, setSku] = useState("MACBOOK-PRO");
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState("");
-
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+  console.log("🔥 THE REACT APP IS USING THIS URL: ", import.meta.env.VITE_API_URL);
   const submitOrder = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/api/orders", {
+      const response = await axios.post(`${API_URL}/api/orders`, {
         sku: sku,
         quantity: quantity,
       });
