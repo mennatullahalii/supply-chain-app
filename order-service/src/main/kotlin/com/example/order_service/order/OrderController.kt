@@ -1,12 +1,14 @@
 package com.example.order_service.order
 
+import com.example.order_service.event.OrderEventProducer
 import org.springframework.web.bind.annotation.*
 import java.math.BigDecimal
 
 @RestController
 @RequestMapping("/api/orders")
 @CrossOrigin(origins = ["*"])
-class OrderController(private val orderRepository: OrderRepository) {
+class OrderController(private val orderRepository: OrderRepository,
+                      private val orderEventProducer: OrderEventProducer) {
 
     @PostMapping
     fun placeOrder(@RequestBody request: OrderRequest): PurchaseOrder {
@@ -18,7 +20,16 @@ class OrderController(private val orderRepository: OrderRepository) {
             quantity = request.quantity,
             totalPrice = price
         )
-        return orderRepository.save(newOrder)
+        val savedOrder = orderRepository.save(newOrder)
+
+        orderEventProducer.sendOrderCreatedEvent(
+            orderId = savedOrder.id.toString(),
+            productId = savedOrder.sku,
+            quantity = savedOrder.quantity
+        )
+
+        return savedOrder
+
     }
 }
 
