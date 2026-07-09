@@ -1,3 +1,23 @@
+
+
+server:
+  port: 8081 # Runs on a different port than order-service (8080)
+
 spring:
   application:
     name: inventory-service
+    
+  data:
+    mongodb:
+      # Connects to the MongoDB pod inside your Kubernetes cluster
+      uri: mongodb://admin:password@mongodb-service:27017/inventory_db?authSource=admin
+      
+  kafka:
+    bootstrap-servers: kafka-service:9092
+    consumer:
+      group-id: inventory-group # Identifies this microservice to Kafka
+      auto-offset-reset: earliest # If it disconnects, read from the last missed message
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*" # Allows Jackson to deserialize any incoming JSON
