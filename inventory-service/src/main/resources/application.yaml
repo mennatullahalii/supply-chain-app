@@ -6,7 +6,7 @@ server:
 spring:
   application:
     name: inventory-service
-    
+
   data:
     mongodb:
       # Connects to the MongoDB pod inside your Kubernetes cluster
@@ -14,6 +14,11 @@ spring:
       
   kafka:
     bootstrap-servers: kafka-service:9092
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      
     consumer:
       group-id: inventory-group # Identifies this microservice to Kafka
       auto-offset-reset: earliest # If it disconnects, read from the last missed message
